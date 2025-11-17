@@ -81,11 +81,10 @@ def load_data(filename):
 
 
 def train_model(evidence, labels):
-    """
-    Given a list of evidence lists and a list of labels, return a
-    fitted k-nearest neighbor model (k=1) trained on the data.
-    """
-    raise NotImplementedError
+    model = KNeighborsClassifier(n_neighbors=1)
+    # model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(evidence, labels)
+    return model
 
 
 def evaluate(labels, predictions):
