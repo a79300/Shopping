@@ -81,28 +81,28 @@ def load_data(filename):
 
 
 def train_model(evidence, labels):
-    # model = KNeighborsClassifier(n_neighbors=1)
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model = KNeighborsClassifier(n_neighbors=1)
+    # model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(evidence, labels)
     return model
 
 
 def evaluate(labels, predictions):
-    """
-    Given a list of actual labels and a list of predicted labels,
-    return a tuple (sensitivity, specificity).
+    true_positives = 0
+    true_negatives = 0
+    total_positives = labels.count(1)
+    total_negatives = labels.count(0)
 
-    Assume each label is either a 1 (positive) or 0 (negative).
+    for actual, predicted in zip(labels, predictions):
+        if actual == 1 and predicted == 1:
+            true_positives += 1
+        elif actual == 0 and predicted == 0:
+            true_negatives += 1
 
-    `sensitivity` should be a floating-point value from 0 to 1
-    representing the "true positive rate": the proportion of
-    actual positive labels that were accurately identified.
+    sensitivity = true_positives / total_positives if total_positives > 0 else 0
+    specificity = true_negatives / total_negatives if total_negatives > 0 else 0
 
-    `specificity` should be a floating-point value from 0 to 1
-    representing the "true negative rate": the proportion of
-    actual negative labels that were accurately identified.
-    """
-    raise NotImplementedError
+    return (sensitivity, specificity)
 
 
 if __name__ == "__main__":
