@@ -81,8 +81,8 @@ def load_data(filename):
 
 
 def train_model(evidence, labels):
-    model = KNeighborsClassifier(n_neighbors=1)
-    # model = RandomForestClassifier(n_estimators=100, random_state=42)
+    # model = KNeighborsClassifier(n_neighbors=1)
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(evidence, labels)
     return model
 
