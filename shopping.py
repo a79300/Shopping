@@ -77,6 +77,11 @@ def main():
             "Specificity": specificity
         })
 
+    # Create table
+    df = pd.DataFrame(results).sort_values(by="Accuracy", ascending=False)
+    print("\n=== Comparison of the Models ===\n")
+    print(df.to_string(index=False))
+
 
 def load_data(filename):
     evidence = []
