@@ -152,7 +152,7 @@ def main():
         ],
 
         aspect='auto',
-        title='Heatmap das Métricas por Model (com %)',
+        title='Heatmap of Metrics by Model (with %)',
         template="plotly_dark"
     )
 
