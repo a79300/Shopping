@@ -56,7 +56,8 @@ def main():
         "SVM": SVC(kernel="linear"),
         "Decision Tree": DecisionTreeClassifier(random_state=42),
         "Gradient Boosting": GradientBoostingClassifier(random_state=42),
-        "Extra Trees": ExtraTreesClassifier(n_estimators=100, random_state=42)
+        "Extra Trees": ExtraTreesClassifier(n_estimators=100, random_state=42),
+        "Naive Bayes": GaussianNB()
     }
 
     # Tuning for Random Forest
