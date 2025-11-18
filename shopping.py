@@ -51,7 +51,8 @@ def main():
     models = {
         # Train the K-NN model on training data and make predictions on test data
         "KNN": KNeighborsClassifier(n_neighbors=3),
-        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42)
+        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
+        "Logistic Regression": LogisticRegression(max_iter=5000, solver="saga")
     }
 
     # Tuning for Random Forest
