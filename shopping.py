@@ -57,7 +57,8 @@ def main():
         "Decision Tree": DecisionTreeClassifier(random_state=42),
         "Gradient Boosting": GradientBoostingClassifier(random_state=42),
         "Extra Trees": ExtraTreesClassifier(n_estimators=100, random_state=42),
-        "Naive Bayes": GaussianNB()
+        "Naive Bayes": GaussianNB(),
+        "MLP Neural Net": MLPClassifier(hidden_layer_sizes=(50,), max_iter=2000, random_state=42, early_stopping=True)
     }
 
     # Tuning for Random Forest
