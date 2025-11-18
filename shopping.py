@@ -50,7 +50,8 @@ def main():
     # models
     models = {
         # Train the K-NN model on training data and make predictions on test data
-        "KNN": KNeighborsClassifier(n_neighbors=3)
+        "KNN": KNeighborsClassifier(n_neighbors=3),
+        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42)
     }
 
     # Tuning for Random Forest
