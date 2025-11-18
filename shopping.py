@@ -138,6 +138,29 @@ def main():
     
     fig_grouped.show()
 
+    # Heatmap of key metrics
+    heatmap_data = df.set_index('Model')[['Accuracy', 'Corrects', 'Incorrects', 'Sensitivity', 'Specificity']].T
+
+    fig_heatmap = px.imshow(
+        heatmap_data,
+        text_auto='.2f',
+        
+        color_continuous_scale=[
+            [0.0, 'red'],
+            [0.5, 'yellow'],
+            [1.0, 'green']
+        ],
+
+        aspect='auto',
+        title='Heatmap das Métricas por Model (com %)',
+        template="plotly_dark"
+    )
+
+    fig_heatmap.show(config={
+        'displayModeBar': True,  # Remove the toolbar
+        'staticPlot': True        # Make the graph static (no zoom/pan)
+    })
+
     # Final summary indicating the best model.
     best_model = df.loc[df['Accuracy'].idxmax()]
     print("\n=== Final summary ===")
