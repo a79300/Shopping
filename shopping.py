@@ -93,6 +93,12 @@ def main():
     # save CSV
     df.to_csv("results_models.csv", index=False)
 
+    # Final summary indicating the best model.
+    best_model = df.loc[df['Accuracy'].idxmax()]
+    print("\n=== Final summary ===")
+    print(f"The best Model is '{best_model['Model']}' with Accuracy of {best_model['Accuracy']:.2f}, with {best_model['Corrects']:.2f}% Corrects, with {best_model['Incorrects']:.0f}% Incorrects, "
+          f"Sensitivity of {best_model['Sensitivity']:.2f} and Specificity of {best_model['Specificity']:.2f}.")
+
 def load_data(filename):
     evidence = []
     labels = []
