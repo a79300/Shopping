@@ -82,6 +82,8 @@ def main():
     print("\n=== Comparison of the Models ===\n")
     print(df.to_string(index=False))
 
+    # save CSV
+    df.to_csv("results_models.csv", index=False)
 
 def load_data(filename):
     evidence = []
