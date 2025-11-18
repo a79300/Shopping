@@ -93,6 +93,51 @@ def main():
     # save CSV
     df.to_csv("results_models.csv", index=False)
 
+    # Convert rate metrics to percentage.
+    for col in ['Accuracy', 'Sensitivity', 'Specificity']:
+        if col in df.columns:
+            df[col] = df[col] * 100
+
+    for col in ['Corrects', 'Incorrects']:
+        if col in df.columns:
+            df[col] = (df[col] * 100)/4932
+
+    # Grouped bar chart
+    metricas = ["Accuracy", "Corrects", "Incorrects", "Sensitivity", "Specificity"]
+    colors = ["#3357FF", "#33FF57", "#FF5733", "#FFC300", "#8E44AD"]
+
+    fig_grouped = go.Figure()
+
+    for i, metrica in enumerate(metricas):
+        fig_grouped.add_trace(go.Bar(
+            x=df['Model'],
+            y=df[metrica],
+            name=metrica,
+            marker_color=colors[i],
+            text=df[metrica],
+            texttemplate='%{text:.2f}%',
+            textposition='inside'
+
+        ))
+
+    fig_grouped.update_layout(
+        title="Comparison of Metrics by Model (Grouped)",
+        xaxis_title="Models",
+        yaxis_title="Percentage (%)",
+        barmode="group",  # Group bars side by side
+        template="plotly_dark",
+        yaxis=dict(
+                range=[0, 100],          # Limit from 0 to 100%
+                tickmode="linear",       # Linear ticks
+                dtick=10,                # Interval between ticks (10%)
+                showgrid=True,           # Show grid lines
+                gridcolor="lightgray",   # Grid color
+                gridwidth=1              # Grid line thickness
+            ),
+    )
+    
+    fig_grouped.show()
+
     # Final summary indicating the best model.
     best_model = df.loc[df['Accuracy'].idxmax()]
     print("\n=== Final summary ===")
