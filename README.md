@@ -2,83 +2,83 @@
 
 ## 📋 Introdução
 
-Este projeto implementa um modelo de Machine Learning para prever se um visitante de um site de e-commerce irá realizar uma compra com base no seu comportamento de navegação. Utilizando algoritmos de classificação, o sistema analisa diversos parâmetros da sessão do usuário para determinar a probabilidade de conversão em vendas.
+Este projecto implementa um modelo de Machine Learning para prever se um visitante de um website de comércio electrónico irá realizar uma compra com base no seu comportamento de navegação. Utilizando algoritmos de classificação, o sistema analisa diversos parâmetros da sessão do utilizador para determinar a probabilidade de conversão em vendas.
 
-O projeto foi desenvolvido como parte de um estudo em Inteligência Artificial, utilizando a biblioteca scikit-learn para implementar um classificador K-Nearest Neighbors (KNN) que aprende padrões de comportamento de compra a partir de dados históricos.
+O projecto foi desenvolvido como parte de um estudo em Inteligência Artificial, utilizando a biblioteca scikit-learn para implementar um classificador K-Nearest Neighbors (KNN) que aprende padrões de comportamento de compra a partir de dados históricos.
 
-## 🎯 Descrição do Projeto
+## 🎯 Descrição do Projecto
 
 ### Funcionalidades Principais
 
-- **Carregamento de Dados**: Importa e processa dados de comportamento de usuários a partir de um arquivo CSV
+- **Carregamento de Dados**: Importa e processa dados de comportamento de utilizadores a partir de um ficheiro CSV
 - **Pré-processamento**: Converte dados categóricos (como meses, tipo de visitante) em valores numéricos
-- **Treinamento de Modelo**: Utiliza o algoritmo K-Nearest Neighbors para aprender padrões de compra
-- **Avaliação de Performance**: Calcula métricas de sensibilidade e especificidade para avaliar a precisão do modelo
+- **Treino do Modelo**: Utiliza o algoritmo K-Nearest Neighbors para aprender padrões de compra
+- **Avaliação de Desempenho**: Calcula métricas de sensibilidade e especificidade para avaliar a precisão do modelo
 - **Predição**: Classifica novos visitantes em "compradores" ou "não compradores"
 
 ### Características Analisadas
 
-O modelo considera 17 características diferentes de cada sessão de usuário:
+O modelo considera 17 características diferentes de cada sessão de utilizador:
 
 1. **Administrative** - Número de páginas administrativas visitadas
-2. **Administrative_Duration** - Tempo gasto em páginas administrativas
-3. **Informational** - Número de páginas informacionais visitadas
-4. **Informational_Duration** - Tempo gasto em páginas informacionais
+2. **Administrative_Duration** - Tempo despendido em páginas administrativas
+3. **Informational** - Número de páginas informativas visitadas
+4. **Informational_Duration** - Tempo despendido em páginas informativas
 5. **ProductRelated** - Número de páginas de produtos visitadas
-6. **ProductRelated_Duration** - Tempo gasto em páginas de produtos
+6. **ProductRelated_Duration** - Tempo despendido em páginas de produtos
 7. **BounceRates** - Taxa de rejeição
 8. **ExitRates** - Taxa de saída
 9. **PageValues** - Valor médio das páginas visitadas
 10. **SpecialDay** - Proximidade de datas especiais (0-1)
 11. **Month** - Mês da visita
-12. **OperatingSystems** - Sistema operacional utilizado
+12. **OperatingSystems** - Sistema operativo utilizado
 13. **Browser** - Navegador utilizado
 14. **Region** - Região geográfica
 15. **TrafficType** - Tipo de tráfego
-16. **VisitorType** - Tipo de visitante (novo ou retornante)
-17. **Weekend** - Se a visita ocorreu no fim de semana
+16. **VisitorType** - Tipo de visitante (novo ou recorrente)
+17. **Weekend** - Se a visita ocorreu ao fim-de-semana
 
 ### Métricas de Avaliação
 
-- **Sensibilidade (True Positive Rate)**: Percentual de compradores corretamente identificados
-- **Especificidade (True Negative Rate)**: Percentual de não-compradores corretamente identificados
-- **Acurácia**: Número total de predições corretas vs. incorretas
+- **Sensibilidade (True Positive Rate)**: Percentagem de compradores correctamente identificados
+- **Especificidade (True Negative Rate)**: Percentagem de não-compradores correctamente identificados
+- **Exactidão**: Número total de predições correctas vs. incorrectas
 
-## 🤖 Ferramentas de IA Usadas
+## 🤖 Ferramentas de IA Utilizadas
 
 ### Durante o Desenvolvimento
 
 1. **GitHub Copilot**
    - Assistência na escrita de código Python
    - Sugestões para implementação de funções
-   - Otimização de estruturas de dados
+   - Optimização de estruturas de dados
    - Documentação de código
 
 2. **ChatGPT / Claude**
-   - Consultas sobre melhores práticas de Machine Learning
+   - Consultas sobre as melhores práticas de Machine Learning
    - Explicações sobre algoritmos de classificação
    - Ajuda na compreensão de métricas de avaliação
-   - Suporte na estruturação do projeto
+   - Suporte na estruturação do projecto
 
 ### Bibliotecas de IA/ML Utilizadas
 
 - **scikit-learn**: Biblioteca principal para Machine Learning
   - `KNeighborsClassifier`: Algoritmo de classificação K-NN
   - `train_test_split`: Divisão de dados para treino e teste
-- **NumPy/Pandas**: Manipulação de dados (implicitamente via sklearn)
+- **NumPy/Pandas**: Manipulação de dados (implicitamente através do sklearn)
 
-## 💬 Exemplos de Prompts e Outputs
+## 💬 Exemplos de Prompts e Resultados
 
 ### Exemplo 1: Criação da Função de Carregamento de Dados
 
-**Prompt usado:**
+**Prompt utilizado:**
 ```
 "Create a function to load data from a CSV file with shopping behavior data. 
 The function should convert month names to numbers, visitor types to binary, 
 and weekend/revenue boolean strings to integers."
 ```
 
-**Output gerado:**
+**Resultado gerado:**
 ```python
 def load_data(filename):
     evidence = []
@@ -98,13 +98,13 @@ def load_data(filename):
 
 ### Exemplo 2: Implementação do Modelo KNN
 
-**Prompt usado:**
+**Prompt utilizado:**
 ```
 "Implement a function to train a K-Nearest Neighbors classifier 
 with n_neighbors=1 using sklearn"
 ```
 
-**Output gerado:**
+**Resultado gerado:**
 ```python
 def train_model(evidence, labels):
     model = KNeighborsClassifier(n_neighbors=1)
@@ -114,13 +114,13 @@ def train_model(evidence, labels):
 
 ### Exemplo 3: Função de Avaliação
 
-**Prompt usado:**
+**Prompt utilizado:**
 ```
 "Create an evaluation function that calculates sensitivity (true positive rate) 
 and specificity (true negative rate) from actual labels and predictions"
 ```
 
-**Output gerado:**
+**Resultado gerado:**
 ```python
 def evaluate(labels, predictions):
     true_positives = 0
@@ -147,7 +147,7 @@ def evaluate(labels, predictions):
 python shopping.py shopping.csv
 ```
 
-**Output típico:**
+**Resultado típico:**
 ```
 Correct: 4088
 Incorrect: 844
@@ -171,12 +171,12 @@ python shopping.py shopping.csv
 
 ### Parâmetros
 
-- O programa aceita um argumento: o caminho para o arquivo CSV com os dados de compra
-- O arquivo CSV deve conter as colunas especificadas na seção "Características Analisadas"
+- O programa aceita um argumento: o caminho para o ficheiro CSV com os dados de compra
+- O ficheiro CSV deve conter as colunas especificadas na secção "Características Analisadas"
 
-## 📊 Estrutura do Dataset
+## 📊 Estrutura do Conjunto de Dados
 
-O arquivo `shopping.csv` contém **12.330 sessões** de usuários, com as seguintes características:
+O ficheiro `shopping.csv` contém **12.330 sessões** de utilizadores, com as seguintes características:
 
 - **Formato**: CSV com cabeçalho
 - **Colunas**: 18 (17 features + 1 label)
@@ -188,8 +188,8 @@ O arquivo `shopping.csv` contém **12.330 sessões** de usuários, com as seguin
 ### Algoritmo Principal: K-Nearest Neighbors (KNN)
 
 - **Parâmetro**: n_neighbors = 1
-- **Funcionamento**: Classifica baseado no vizinho mais próximo no espaço de features
-- **Vantagens**: Simples, efetivo para dados bem distribuídos
+- **Funcionamento**: Classifica com base no vizinho mais próximo no espaço de características
+- **Vantagens**: Simples, eficaz para dados bem distribuídos
 - **Desvantagens**: Pode ser sensível a outliers e ruído
 
 ### Divisão de Dados
@@ -204,33 +204,33 @@ O arquivo `shopping.csv` contém **12.330 sessões** de usuários, com as seguin
 # model = RandomForestClassifier(n_estimators=100, random_state=42)
 ```
 
-O código inclui a possibilidade de usar Random Forest como alternativa ao KNN.
+O código inclui a possibilidade de utilizar Random Forest como alternativa ao KNN.
 
 ## 📈 Melhorias Futuras
 
-1. **Otimização de Hiperparâmetros**: Testar diferentes valores de k no KNN
-2. **Feature Engineering**: Criar novas features derivadas das existentes
-3. **Ensemble Methods**: Combinar múltiplos modelos para melhor performance
-4. **Cross-Validation**: Implementar validação cruzada para avaliação mais robusta
-5. **Balanceamento de Classes**: Tratar o desbalanceamento entre compradores e não-compradores
+1. **Optimização de Hiperparâmetros**: Testar diferentes valores de k no KNN
+2. **Feature Engineering**: Criar novas características derivadas das existentes
+3. **Métodos de Ensemble**: Combinar múltiplos modelos para melhor desempenho
+4. **Validação Cruzada**: Implementar validação cruzada para avaliação mais robusta
+5. **Balanceamento de Classes**: Tratar o desequilíbrio entre compradores e não-compradores
 6. **Interface Web**: Criar uma interface para predições em tempo real
 
-## 📝 Observações sobre o Uso de IA
+## 📝 Observações sobre a Utilização de IA
 
-Este projeto demonstra como ferramentas de IA podem acelerar o desenvolvimento:
+Este projecto demonstra como as ferramentas de IA podem acelerar o desenvolvimento:
 
 - **Produtividade**: Redução de ~40% no tempo de desenvolvimento
-- **Qualidade**: Sugestões de código seguindo best practices
-- **Aprendizado**: Explicações contextuais ajudaram a entender conceitos de ML
-- **Debug**: Assistência na identificação e correção de erros
+- **Qualidade**: Sugestões de código seguindo as melhores práticas
+- **Aprendizagem**: Explicações contextuais ajudaram a compreender conceitos de ML
+- **Depuração**: Assistência na identificação e correcção de erros
 
-As ferramentas de IA foram usadas como assistentes, com revisão humana de todo o código gerado para garantir qualidade e entendimento completo.
+As ferramentas de IA foram utilizadas como assistentes, com revisão humana de todo o código gerado para garantir qualidade e compreensão completa.
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido para fins educacionais.
+Este projecto foi desenvolvido para fins educativos.
 
 ## 👤 Autor
 
-Desenvolvido como parte de um projeto de Inteligência Artificial.
+Desenvolvido como parte de um projecto de Inteligência Artificial.
 
