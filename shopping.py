@@ -53,7 +53,8 @@ def main():
         "KNN": KNeighborsClassifier(n_neighbors=3),
         "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
         "Logistic Regression": LogisticRegression(max_iter=5000, solver="saga"),
-        "SVM": SVC(kernel="linear")
+        "SVM": SVC(kernel="linear"),
+        "Decision Tree": DecisionTreeClassifier(random_state=42)
     }
 
     # Tuning for Random Forest
