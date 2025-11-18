@@ -6,13 +6,21 @@ based on their browsing session data.
 
 import csv
 import sys
-
-from sklearn.model_selection import train_test_split
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, ExtraTreesClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
 
 # Percentage of data to use for testing (40% test, 60% train)
 TEST_SIZE = 0.4
-
 
 def main():
     """
@@ -22,68 +30,63 @@ def main():
 
     # Check command-line arguments - expect exactly one argument (CSV filename)
     if len(sys.argv) != 2:
-        sys.exit("Usage: python shopping.py data")
+        sys.exit("Uso: python shopping.py data.csv")
 
     # Load data from spreadsheet and split into train and test sets
     # evidence = list of feature vectors, labels = list of outcomes (0 or 1)
     evidence, labels = load_data(sys.argv[1])
-    
+
     # Split data into training and testing sets using sklearn's train_test_split
     # X_train/y_train = data for training, X_test/y_test = data for evaluation
     X_train, X_test, y_train, y_test = train_test_split(
         evidence, labels, test_size=TEST_SIZE
     )
 
-    # Train the K-NN model on training data and make predictions on test data
-    model = train_model(X_train, y_train)
-    predictions = model.predict(X_test)
-    
-    # Evaluate model performance using sensitivity and specificity metrics
-    sensitivity, specificity = evaluate(y_test, predictions)
+    # Scale data
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
 
-    # Print results showing accuracy and performance metrics
-    print(f"Correct: {(y_test == predictions).sum()}")
-    print(f"Incorrect: {(y_test != predictions).sum()}")
-    print(f"True Positive Rate: {100 * sensitivity:.2f}%")
-    print(f"True Negative Rate: {100 * specificity:.2f}%")
+    # models
+    models = {
+        # Train the K-NN model on training data and make predictions on test data
+        "KNN": KNeighborsClassifier(n_neighbors=3)
+    }
+
+    # Tuning for Random Forest
+    param_grid = {"n_estimators": [50, 100], "max_depth": [None, 10]}
+    grid = GridSearchCV(RandomForestClassifier(random_state=42), param_grid, cv=3)
+    grid.fit(X_train, y_train)
+    models["Random Forest (Tuned)"] = grid.best_estimator_
+
+    # Evaluate models
+    results = []
+    for name, model in models.items():
+        model.fit(X_train, y_train)
+        predictions = model.predict(X_test)
+        sensitivity, specificity = evaluate(y_test, predictions)
+        accuracy = (y_test == predictions).sum() / len(y_test)
+        correct = (y_test == predictions).sum()
+        incorrect = (y_test != predictions).sum()
+        results.append({
+            "Model": name,
+            "Accuracy": accuracy,
+            "Corrects": correct,
+            "Incorrects": incorrect,
+            "Sensitivity": sensitivity,
+            "Specificity": specificity
+        })
 
 
 def load_data(filename):
-    """
-    Load shopping data from a CSV file and prepare it for ML model.
-    
-    Args:
-        filename: Path to CSV file containing shopping session data
-        
-    Returns:
-        tuple: (evidence, labels) where evidence is a list of feature vectors
-               and labels is a list of binary outcomes (1=purchase, 0=no purchase)
-    """
-    
-    # Initialize lists to store features and labels
     evidence = []
     labels = []
-
-    # Dictionary to convert month names to numerical values (0-11)
-    months = {
-        "Jan": 0,
-        "Feb": 1,
-        "Mar": 2,
-        "Apr": 3,
-        "May": 4,
-        "June": 5,
-        "Jul": 6,
-        "Aug": 7,
-        "Sep": 8,
-        "Oct": 9,
-        "Nov": 10,
-        "Dec": 11,
-    }
+    months = {"Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "June": 5,
+              "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11}
 
     # Open and read the CSV file
     with open(filename, newline="") as f:
         reader = csv.DictReader(f)
-
         # Process each row of shopping session data
         for row in reader:
             # Create a feature vector with 17 features for each session
@@ -93,7 +96,6 @@ def load_data(filename):
                 float(row["Administrative_Duration"]),
                 # Informational pages visited and time spent
                 int(row["Informational"]),
-                float(row["Informational_Duration"]),
                 # Product-related pages visited and time spent
                 int(row["ProductRelated"]),
                 float(row["ProductRelated_Duration"]),
@@ -116,38 +118,15 @@ def load_data(filename):
                 1 if row["Weekend"].strip().lower() == "true" else 0,
             ]
             evidence.append(sample)
-            
+
             # Label: 1 if purchase was made (Revenue=TRUE), 0 otherwise
             labels.append(1 if row["Revenue"].strip().lower() == "true" else 0)
 
     return (evidence, labels)
 
-
-def train_model(evidence, labels):
-    """
-    Train a K-Nearest Neighbors classifier on the provided data.
-    
-    Args:
-        evidence: List of feature vectors (training data)
-        labels: List of corresponding labels (0 or 1)
-        
-    Returns:
-        Trained KNeighborsClassifier model
-    """
-    
-    # Initialize K-NN classifier with k=1 (classify based on nearest neighbor)
-    model = KNeighborsClassifier(n_neighbors=1)
-    
-    # Alternative: Random Forest (uncomment to use instead of K-NN)
-    # model = RandomForestClassifier(n_estimators=100, random_state=42)
-    
-    # Train the model on the evidence and labels
-    model.fit(evidence, labels)
-    return model
-
-
 def evaluate(labels, predictions):
     """
+    true_negatives = sum(1 for a, p in zip(labels, predictions) if a == 0 and p == 0)
     Evaluate model performance by calculating sensitivity and specificity.
     
     Args:
@@ -161,32 +140,21 @@ def evaluate(labels, predictions):
     """
     
     # Initialize counters for correct predictions
-    true_positives = 0  # Correctly predicted purchases
-    true_negatives = 0  # Correctly predicted non-purchases
+    true_positives = sum(1 for a, p in zip(labels, predictions) if a == 1 and p == 1)  # Correctly predicted purchases
+    true_negatives = sum(1 for a, p in zip(labels, predictions) if a == 0 and p == 0)  # Correctly predicted non-purchases
     
     # Count total actual positives and negatives
     total_positives = labels.count(1)  # Total actual purchases
     total_negatives = labels.count(0)  # Total actual non-purchases
 
-    # Compare each prediction to actual label
-    for actual, predicted in zip(labels, predictions):
-        if actual == 1 and predicted == 1:
-            # Model correctly predicted a purchase
-            true_positives += 1
-        elif actual == 0 and predicted == 0:
-            # Model correctly predicted no purchase
-            true_negatives += 1
-
     # Calculate sensitivity (recall for positive class)
     # Avoid division by zero if no positive examples exist
     sensitivity = true_positives / total_positives if total_positives > 0 else 0
-    
+
     # Calculate specificity (recall for negative class)
     # Avoid division by zero if no negative examples exist
     specificity = true_negatives / total_negatives if total_negatives > 0 else 0
-
     return (sensitivity, specificity)
-
 
 if __name__ == "__main__":
     main()
